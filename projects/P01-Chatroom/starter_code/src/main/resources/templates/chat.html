@@ -37,6 +37,11 @@
                     </div>
                     <div class="mdui-container" style="padding:20px 35px">
                         <!-- TODO: add a send button to send message -->
+
+                        <button class="mdui-btn mdui-color-theme-accent mdui-ripple"
+                                onclick="sendMsgToServer()">Send
+                        </button>
+
                         <button class="mdui-btn mdui-color-theme mdui-ripple"
                                 onclick="clearMsg()">Clear
                         </button>
@@ -56,8 +61,14 @@
                         <i class="mdui-icon material-icons">face</i></span>
                     <span class="mdui-chip-title">Online Users</span>
                     <!-- TODO: check online number num -->
+
+                    <span class="mdui-chip-title chat-num">0</span>
+
                 </div>
                 <!-- TODO: add a message container -->
+
+                <div class="message-container"></div>
+
             </div>
 
         </div>
@@ -92,14 +103,14 @@
             //Receive Message from Server
             var message = JSON.parse(event.data) || {};
             var $messageContainer = $('.message-container');
-            if (message.type === 'SPEAK') {
+            if (message.type === 'CHAT') {
                 $messageContainer.append(
                     '<div class="mdui-card" style="margin: 10px 0;">' +
                     '<div class="mdui-card-primary">' +
-                    '<div class="mdui-card-content message-content">' + message.username + "：" + message.msg + '</div>' +
+                    '<div class="mdui-card-content message-content">' + message.userName + "：" + message.content + '</div>' +
                     '</div></div>');
             }
-            $('.chat-num').text(message.onlineCount);
+            $('.chat-num').text(message.onlineUsers);
             var $cards = $messageContainer.children('.mdui-card:visible').toArray();
             if ($cards.length > 5) {
                 $cards.forEach(function (item, index) {
@@ -133,7 +144,7 @@
     function sendMsgToServer() {
         var $message = $('#msg');
         if ($message.val()) {
-            webSocket.send(JSON.stringify({username: $('#username').text(), msg: $message.val()}));
+            webSocket.send(JSON.stringify({userName: $('#username').text(), content: $message.val()}));
             $message.val(null);
         }
     }
