@@ -6,7 +6,6 @@ import com.alibaba.fastjson.JSON;
  * WebSocket message model
  */
 public class Message {
-    // TODO: add message model.
 
     public static final String ENTER = "ENTER";
     public static final String CHAT = "CHAT";
